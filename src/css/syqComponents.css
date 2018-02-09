@@ -1,3 +1,8 @@
+@font-face {
+  font-family: 'iconfont';
+  /* project id 568333 */
+  src: url("//at.alicdn.com/t/font_568333_5lhi0qctix0w9udi.eot");
+  src: url("//at.alicdn.com/t/font_568333_5lhi0qctix0w9udi.eot?#iefix") format("embedded-opentype"), url("//at.alicdn.com/t/font_568333_5lhi0qctix0w9udi.woff") format("woff"), url("//at.alicdn.com/t/font_568333_5lhi0qctix0w9udi.ttf") format("truetype"), url("//at.alicdn.com/t/font_568333_5lhi0qctix0w9udi.svg#iconfont") format("svg"); }
 * {
   padding: 0;
   margin: 0;
@@ -12,92 +17,91 @@
 .noClick {
   cursor: not-allowed; }
 
-.cardSlider-container {
-  height: 102px;
-  background-color: lightgrey;
-  margin: 0 auto; }
-  .cardSlider-container .slider-cards {
-    height: 82px;
-    float: left;
-    margin: 10px;
-    position: relative;
-    overflow: hidden; }
-    .cardSlider-container .slider-cards .slider-cards-ul {
-      height: 82px;
-      position: absolute;
-      left: 0;
-      transition: left 1s; }
-    .cardSlider-container .slider-cards .slider-card {
-      background-color: #fff;
-      float: left;
-      margin-right: 10px;
-      font-size: 20px;
-      text-align: center;
-      padding: 10px 0; }
-      .cardSlider-container .slider-cards .slider-card .card-content {
-        float: left; }
-        .cardSlider-container .slider-cards .slider-card .card-content .card {
-          width: 62px;
-          height: 62px;
-          margin-left: 10px; }
-        .cardSlider-container .slider-cards .slider-card .card-content p {
-          height: 31px;
-          line-height: 31px;
-          margin-left: 10px;
-          color: #3f516e;
-          font-weight: 600; }
-          .cardSlider-container .slider-cards .slider-card .card-content p .num {
-            background-color: #9a2f25;
-            color: #fff;
-            font-size: 12px;
-            padding: 3px 5px;
-            border-radius: 3px; }
-  .cardSlider-container .card-button {
-    width: 51px;
-    float: left;
-    cursor: pointer; }
-    .cardSlider-container .card-button .pre-button, .cardSlider-container .card-button .next-button {
-      width: 15px;
-      height: 15px;
-      padding: 18px;
-      background-color: #e1e1e1; }
-
 .slider-container {
-  width: 800px;
-  height: 275px;
+  height: 230px;
   background-color: #fff;
   margin: 0 auto;
   overflow: hidden;
-  position: relative; }
+  position: relative;
+  cursor: pointer; }
   .slider-container ul {
     height: 100%;
     position: absolute;
     left: 0; }
     .slider-container ul .pic {
-      width: 200px;
       height: 100%;
       float: left;
       border-right: 1px solid #f0f3ef;
       box-sizing: border-box; }
-      .slider-container ul .pic:last-child {
-        border-right: 1px solid transparent; }
-
-.left-btn {
-  width: 20px;
-  height: 40px;
-  line-height: 40px;
-  background-color: #D9D9D9;
-  position: absolute;
-  top: calc(50% - 40px);
-  left: 0; }
-
-.right-btn {
-  width: 20px;
-  height: 40px;
-  line-height: 40px;
-  background-color: #D9D9D9;
-  position: absolute;
-  top: calc(50% - 40px);
-  right: 0; }
+    .slider-container ul img {
+      display: block;
+      margin: 0 auto 10px; }
+      .slider-container ul img.imgSlider {
+        position: absolute;
+        top: 50%;
+        transform: translate(0, -50%); }
+    .slider-container ul .productDes {
+      width: 95%;
+      width: calc(100% - 10px);
+      height: 200px;
+      padding: 0 5px;
+      color: #999;
+      font-size: 12px;
+      text-align: center; }
+      .slider-container ul .productDes .productName {
+        width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin-bottom: 10px;
+        cursor: pointer; }
+    .slider-container ul .price .newPrice {
+      font-size: 18px;
+      font-weight: 700;
+      color: #f10214;
+      margin-right: 5px; }
+    .slider-container ul .price i {
+      font-style: normal;
+      font-size: 12px; }
+  .slider-container .left-btn, .slider-container .right-btn {
+    width: 20px;
+    height: 40px;
+    line-height: 40px;
+    background-color: rgba(0, 0, 0, 0.18);
+    position: absolute;
+    top: calc(50% - 40px);
+    z-index: 888;
+    color: white;
+    border: 0;
+    cursor: pointer;
+    outline: none; }
+    .slider-container .left-btn:hover, .slider-container .right-btn:hover {
+      background-color: rgba(0, 0, 0, 0.3); }
+  .slider-container .left-btn {
+    left: 0; }
+  .slider-container .right-btn {
+    right: 0; }
+  .slider-container .indicater {
+    position: absolute;
+    left: 50%;
+    bottom: 20px;
+    transform: translate(-50%, 0); }
+    .slider-container .indicater .ring {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 10px;
+      background-color: #fff;
+      position: relative; }
+    .slider-container .indicater .solid {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 6px;
+      background-color: transparent;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%); }
 
 /*# sourceMappingURL=syqComponents.css.map */

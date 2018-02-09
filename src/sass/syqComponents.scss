@@ -1,6 +1,13 @@
-﻿$cards-height:102px;
-$slider-width:800px;
-$slider-height:275px;
+﻿$slider-width:800px;
+$slider-height:230px;
+@font-face {
+    font-family: 'iconfont';  /* project id 568333 */
+    src: url('//at.alicdn.com/t/font_568333_5lhi0qctix0w9udi.eot');
+    src: url('//at.alicdn.com/t/font_568333_5lhi0qctix0w9udi.eot?#iefix') format('embedded-opentype'),
+    url('//at.alicdn.com/t/font_568333_5lhi0qctix0w9udi.woff') format('woff'),
+    url('//at.alicdn.com/t/font_568333_5lhi0qctix0w9udi.ttf') format('truetype'),
+    url('//at.alicdn.com/t/font_568333_5lhi0qctix0w9udi.svg#iconfont') format('svg');
+  }
 *{
     padding: 0;
     margin: 0;
@@ -15,109 +22,112 @@ $slider-height:275px;
 .noClick{
     cursor: not-allowed;
 }
-// 卡片展示器
-.cardSlider-container{
-    height: $cards-height;
-    background-color: lightgrey;
-    margin: 0 auto;
-    .slider-cards{
-        height: $cards-height - 20;
-        float: left;
-        margin: 10px;
-        position: relative;
-        overflow: hidden;
-        .slider-cards-ul{
-            height: $cards-height - 20;
-            position: absolute;
-            left: 0;
-            transition: left 1s;
-        }
-        .slider-card{
-            background-color: #fff;
-            float: left;
-            margin-right:10px;
-            font-size: 20px;
-            text-align: center;
-            padding: 10px 0;
-            .card-content{
-                float: left;
-                .card{
-                    width: 62px;
-                    height: 62px;
-                    margin-left: 10px;
-                }
-                p{
-                    height: 31px;
-                    line-height: 31px;
-                    margin-left: 10px;
-                    color: #3f516e;
-                    font-weight: 600;
-                    .num{
-                        background-color: #9a2f25;
-                        color: #fff;
-                        font-size: 12px;
-                        padding:3px 5px;
-                        border-radius: 3px;
-                    }
-                }
-            }
-        }
-    }
-    .card-button{
-        width: 51px;
-        float: left;
-        cursor: pointer;
-        .pre-button,.next-button{
-            width: 15px;
-            height: 15px;
-            padding: 18px;
-            background-color: #e1e1e1;
-            
-        }
-    }
-    
-    
-}
 // 轮播组件
 .slider-container{
-   width: $slider-width;
+//    width: $slider-width;
    height: $slider-height;
    background-color: #fff;
    margin: 0 auto;
    overflow: hidden;
    position: relative;
+   cursor: pointer;
    ul{
        height: 100%;
        position: absolute;
        left: 0;
     .pic{
-        width: $slider-width / 4;
+        // width: $slider-width / 4;
         height: 100%;
         float: left;
         border-right: 1px solid #f0f3ef;
         box-sizing: border-box;
-        &:last-child{
-            border-right: 1px solid transparent;
+    }
+    img{
+        display: block;
+        margin: 0 auto 10px;
+        &.imgSlider{
+           position: absolute;
+           top: 50%;
+           transform: translate(0,-50%);
+        }
+    }
+    .productDes{
+        width:95%;
+        width: calc(100% - 10px);
+        height:200px;
+        padding:0 5px;
+        color: #999;
+        font-size: 12px;
+        text-align: center;
+        .productName{
+            width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+    }
+    .price{
+        .newPrice{
+            font-size: 18px;
+            font-weight: 700;
+            color: #f10214;
+            margin-right: 5px;
+        }
+        i{
+            font-style: normal;
+            font-size: 12px;
         }
     }
    }  
-}
-//向左按钮、向右按钮
-.left-btn{
-    width: 20px;
-    height: 40px;
-    line-height: 40px;
-    background-color: #D9D9D9;
-    position: absolute;
-    top: calc(50% - 40px);
-    left: 0;
-}
-.right-btn{
-    width: 20px;
-    height: 40px;
-    line-height: 40px;
-    background-color: #D9D9D9;
-    position: absolute;
-    top: calc(50% - 40px);
-    right: 0;
+    //向左按钮、向右按钮
+    .left-btn,.right-btn{
+        width: 20px;
+        height: 40px;
+        line-height: 40px;
+        background-color: rgba(0,0,0,0.18);
+        position: absolute;
+        top: calc(50% - 40px);
+        z-index: 888;
+        color: white;
+        border: 0;
+        cursor: pointer;
+        outline: none;
+        &:hover{
+            background-color: rgba(0,0,0,0.3);
+        }
+    }
+    .left-btn{  
+        left: 0;  
+    }
+    .right-btn{
+        right: 0;
+    }
+    //指示圆
+    .indicater{
+        position: absolute;
+        left: 50%;
+        bottom:20px;
+        transform: translate(-50%,0);
+        .ring{
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 10px;
+            background-color: #fff;
+            position: relative;
+        }
+        .solid{
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            border-radius: 6px;
+            background-color:transparent;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+        }
+    }
 }

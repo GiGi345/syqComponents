@@ -1,180 +1,168 @@
-;(function($){
+;
+(function ($) {
     var app = {
-        init:function(){
+        init: function () {
             this.components();
         },
-        components:function(){
+        components: function () {
             $.fn.extend({
-                //卡片展示器
-                syqCardsDisplay:function(param){
+                /* 滑动组件 */
+                syqSlider: function (param) {
                     var elem = this;
-                     cardsDisplay(elem,param);
-                },
-                //轮播组件
-                syqSlider:function(param){
-                    var elem = this;
-                    slider(elem,param)
+                    sliderApp._init(elem, param);
                 }
-
             })
         }
     }
     app.init();
-})(jQuery);
+})(jQuery)
 
-function cardsDisplay(elem,param){
-   /* 默认参数 */
-   var defaults = {
-       width:216,        //卡片默认宽度
-       count:5,          //展示卡片个数
-       data:[]
-   }
-   var options = $.extend(true,defaults,param);
-   var cardHtml = cardSliderHtml = "";
-   /* 卡片内内容 */
-   for(var i=0;i<options.data.length;i++){
-        cardHtml +='<li class="slider-card">'
-                        +'<div class="card-content">' +'<img  src="' + options.data[i].url + '" class="card">'+'</div>'
-                        +'<div class="card-content">'
-                            +'<p>' + options.data[i].title + '</p>'
-                            +'<p><span class="num">+' + options.data[i].num + '</span>'+'</p>'
-                        +'</div>'
-                    +'</li>'
-   }
-   /* 整体内容 */
-   cardSliderHtml += '<div class="slider-cards">'
-                        +'<ul class="slider-cards-ul clearfix">' + cardHtml + '</ul>'
-                    +'</div>'
-                    +'<div class="card-button">'
-                        +'<div class="pre-button">'+'<img src="image/arrow_left.png" alt="向左">'+'</div>'
-                        +'<div class="next-button noClick">'+'<img src="image/arrow_right.png" alt="向右">'+'</div>'
-                    +'</div>'   
-    $(elem).addClass("cardSlider-container");
-    $(elem).html(cardSliderHtml);
-
-    /* 功能实现 */
-    var cards = $(elem).find(".slider-cards-ul");
-    var card = cards.children(".slider-card");
-    var ulCards =  $(elem).find(".slider-cards");
-    var allcard = card.length;
-    var cardsNum = options.count;   
-    var cardWidth = options.width;
-    var cardsWidth = (cardWidth + 10)*allcard;
-    var buttonWidth = $(elem).find(".card-button").width();
-    cards.css("width",cardsWidth);
-    card.css("width",cardWidth);
-    ulCards.css("width",(cardWidth+10)*cardsNum-10);     //卡片容器的宽度
-    $(elem).css("width",ulCards.width()+buttonWidth+20);    //整个容器的宽度
-    $(elem).find(".pre-button").on("click",function () {
+/* 滑动组件 */
+var sliderApp = {
+    $elem:null,       //元素本身
+    options:null,        //配置参数
+    _init:function(elem, param){
         var that = this;
-        var currentLeft = Math.abs(parseInt(cards.css("left")));
-        var offsetLeft = parseInt(cardWidth)+currentLeft+10;
-        if(offsetLeft<=(cardsWidth-(cardWidth+10)*cardsNum)){
-            cards.css("left",-offsetLeft );
-            // setTimeout(function(){
-            //     cards.css("transform","translateX(-226px)");
-            // },2000)
-           
-            $(that).siblings(".next-button").removeClass("noClick");
+        that.$elem = elem;
+        //默认配置
+        if (param.data.length == 0) {
+            throw new Error("data不能为空");
         }
-        if(offsetLeft<(cardsWidth-(cardWidth+10)*cardsNum)){
-            $(that).removeClass("noClick"); 
-        }else{
-            $(that).addClass("noClick");
+        defaults = {
+            type:1,             //滑动组件的类型，1：纯图片，2：有商品内容
+            width:800,          //滑动组件宽度
+            disPlayNum: 4,      //可展示的卡片数
+            rollingNum: 4,      //每次滑动的卡片数
+            animateTime: 1000,  //动画的速度
+            autoPlay: true       //是否自动播放
         }
-    })
-    $(elem).find(".next-button").on("click",function () {
+        that.options = $.extend(true, defaults, param),
+        that._renderDom();
+        that._event();
+        if(that.options.autoPlay){
+            that.isAutoPlay();
+        }
+    },
+    /* 渲染dom结构 */
+    _renderDom: function () {
         var that = this;
-        var currentLeft = Math.abs(parseInt(cards.css("left")));
-        var offsetLeft = currentLeft-parseInt(cardWidth)-10;
-        if(offsetLeft>=0){
-            cards.css("left",-offsetLeft );
-            $(that).siblings(".pre-button").removeClass("noClick");
+        var data,containerWidth,cardWidth,allCardsLength;
+        data = that.options.data;
+        containerWidth = that.options.width;
+        disPlayNum = that.options.disPlayNum;
+        cardWidth = containerWidth / disPlayNum;
+        that.$elem.addClass("slider-container");
+        var ulDom, liDom, btnDom;
+        ulDom = '<ul class="allWidth clearfix"></ul>';
+        btnDom = ' <button class="left-btn"><</button>' +
+            '<button class="right-btn">></button>'
+        that.$elem.append(ulDom);
+        that.$elem.append(btnDom);
+        data.forEach(function (elem) {
+            var type = that.options.type,
+                imgUrl = elem.imgUrl,
+                product = elem.product,
+                newPrice = elem.newPrice,
+                oldPrice = elem.oldPrice;
+            if(type == 2){
+                liDom = '<li class="pic">' +
+                '<img src=' + imgUrl + ' alt="slider">' +
+                '<div class="productDes">' +
+                '<p class="productName" title="' + product + '">' + product + '</p>' +
+                '<p class="price">' +
+                '<span class="newPrice">' +
+                '<i>¥</i>' +
+                '<span>' + newPrice + '</span>' +
+                '</span>' +
+                '<span class="oldPrice">' +
+                '<i>¥</i>' +
+                '<del>' + oldPrice + '</del>' +
+                '</span>' +
+                '</p>' +
+                ' </div>' +
+                '</li>'
+            }
+            if(type == 1){
+                liDom = '<li class="pic">' +
+                '<img src=' + imgUrl + ' alt="slider" class="imgSlider">' +
+                '</li>'
+            }
+            that.$elem.find(".allWidth").append(liDom);
+        })
+        that.$elem.css("width",containerWidth);
+        that.$elem.find(".pic").css("width",cardWidth);
+        allCardsLength = that.$elem.find(".pic").length * cardWidth;  //初始所有卡片的长度
+        var $copyPic = that.$elem.find(".pic").clone(true);
+        that.$elem.find(".allWidth").css("width",2*allCardsLength);
+        that.$elem.find(".allWidth").append($copyPic);
+    },
+    /* 事件 */
+    _event:function(){
+        var that = this;
+        var $pic =  that.$elem.find(".pic"),
+            $allWidth = that.$elem.find(".allWidth"),
+            $leftBtn = that.$elem.find(".left-btn"),
+            $rightBtn = that.$elem.find(".right-btn"),
+            $copyPic = $pic.clone(true);
+            singleWidth = $pic.width() + 1,
+            allCardsLength = singleWidth * allCardsNum,
+            displayNum = that.options.disPlayNum,            //展示图片数
+            displayLength = singleWidth * displayNum,
+            rollingNum = that.options.rollingNum,         //一次滚动图片数
+            amimateTime = that.options.amimateTime;       //动画执行的时间
+        /* 左移 */
+        $leftBtn.on("click",function(){
+            var currentLeft,moveDistance;
+            currentLeft = Math.abs(parseInt($allWidth.css("left"))),
+            moveDistance = currentLeft + singleWidth*rollingNum;
+            if(animateFlag){
+                animateFlag = false;
+                $allWidth.animate({left:- moveDistance},amimateTime,function(){
+                    var currentRight = parseInt($allWidth.css("right"));
+                    if(currentRight >= 0){
+                        $allWidth.css("left",-(allCardsLength - (displayLength - currentRight)));
+                    }
+                    animateFlag = true;
+                });
+            }
+        })
+        /* 右移 */
+        $rightBtn.on("click",function(){
+            var currentLeft,moveDistance;
+            currentLeft = parseInt($allWidth.css("left"));
+            if(currentLeft>=0){    
+                $allWidth.css("left",-(allCardsLength  +  Math.abs(currentLeft)));
+            }
+            currentLeft = Math.abs(parseInt($allWidth.css("left"))),
+            moveDistance = currentLeft - singleWidth*rollingNum;
+            if(animateFlag){
+                animateFlag = false;
+                $allWidth.animate({left:-moveDistance},amimateTime,function(){
+                    animateFlag = true;
+                });  
+            }
+        })
+    },
+    /* 自动播放 */
+    isAutoPlay:function(){
+        var that = this,
+            $rightBtn = that.$elem.find(".right-btn"),
+            timer;
+       function play(){
+            timer = setInterval(function(){
+                $rightBtn.click();
+            },1000)
+        };
+        play();
+        function stop(){
+            clearInterval(timer);
         }
-        if(offsetLeft>0){
-            $(that).removeClass("noClick");
-        }else {
-            $(that).addClass("noClick");
-        }
-    
-    })
+        that.$elem.on("mouseover",function(){
+            stop();
+        })
+        that.$elem.on("mouseout",function(){
+            play();
+        })
+    }
 
 }
-function slider(elem,param){
-    /* 默认参数 */
-    var defaults = {
-        width:216,        //卡片默认宽度
-        count:5,          //展示卡片个数
-        data:[]
-    }
-    var options = $.extend(true,defaults,param);
-    var cardHtml = cardSliderHtml = "";
-    /* 卡片内内容 */
-    for(var i=0;i<options.data.length;i++){
-         cardHtml +='<li class="slider-card">'
-                         +'<div class="card-content">' +'<img  src="' + options.data[i].url + '" class="card">'+'</div>'
-                         +'<div class="card-content">'
-                             +'<p>' + options.data[i].title + '</p>'
-                             +'<p><span class="num">+' + options.data[i].num + '</span>'+'</p>'
-                         +'</div>'
-                     +'</li>'
-    }
-    /* 整体内容 */
-    cardSliderHtml += '<div class="slider-cards">'
-                         +'<ul class="slider-cards-ul clearfix">' + cardHtml + '</ul>'
-                     +'</div>'
-                     +'<div class="card-button">'
-                         +'<div class="pre-button">'+'<img src="image/arrow_left.png" alt="向左">'+'</div>'
-                         +'<div class="next-button noClick">'+'<img src="image/arrow_right.png" alt="向右">'+'</div>'
-                     +'</div>'   
-     $(elem).addClass("slider-container");
-     $(elem).html(cardSliderHtml);
- 
-     /* 功能实现 */
-     var cards = $(elem).find(".slider-cards-ul");
-     var card = cards.children(".slider-card");
-     var ulCards =  $(elem).find(".slider-cards");
-     var allcard = card.length;
-     var cardsNum = options.count;   
-     var cardWidth = options.width;
-     var cardsWidth = (cardWidth + 10)*allcard;
-     var buttonWidth = $(elem).find(".card-button").width();
-     cards.css("width",cardsWidth);
-     card.css("width",cardWidth);
-     ulCards.css("width",(cardWidth+10)*cardsNum-10);     //卡片容器的宽度
-     $(elem).css("width",ulCards.width()+buttonWidth+20);    //整个容器的宽度
-     $(elem).find(".pre-button").on("click",function () {
-         var that = this;
-         var currentLeft = Math.abs(parseInt(cards.css("left")));
-         var offsetLeft = parseInt(cardWidth)+currentLeft+10;
-         if(offsetLeft<=(cardsWidth-(cardWidth+10)*cardsNum)){
-             cards.css("left",-offsetLeft );
-             // setTimeout(function(){
-             //     cards.css("transform","translateX(-226px)");
-             // },2000)
-            
-             $(that).siblings(".next-button").removeClass("noClick");
-         }
-         if(offsetLeft<(cardsWidth-(cardWidth+10)*cardsNum)){
-             $(that).removeClass("noClick"); 
-         }else{
-             $(that).addClass("noClick");
-         }
-     })
-     $(elem).find(".next-button").on("click",function () {
-         var that = this;
-         var currentLeft = Math.abs(parseInt(cards.css("left")));
-         var offsetLeft = currentLeft-parseInt(cardWidth)-10;
-         if(offsetLeft>=0){
-             cards.css("left",-offsetLeft );
-             $(that).siblings(".pre-button").removeClass("noClick");
-         }
-         if(offsetLeft>0){
-             $(that).removeClass("noClick");
-         }else {
-             $(that).addClass("noClick");
-         }
-     
-     })
- 
- }
