@@ -1,13 +1,5 @@
 ﻿$slider-width:800px;
-$slider-height:230px;
-@font-face {
-    font-family: 'iconfont';  /* project id 568333 */
-    src: url('//at.alicdn.com/t/font_568333_5lhi0qctix0w9udi.eot');
-    src: url('//at.alicdn.com/t/font_568333_5lhi0qctix0w9udi.eot?#iefix') format('embedded-opentype'),
-    url('//at.alicdn.com/t/font_568333_5lhi0qctix0w9udi.woff') format('woff'),
-    url('//at.alicdn.com/t/font_568333_5lhi0qctix0w9udi.ttf') format('truetype'),
-    url('//at.alicdn.com/t/font_568333_5lhi0qctix0w9udi.svg#iconfont') format('svg');
-  }
+$slider-height:470px;
 *{
     padding: 0;
     margin: 0;
@@ -110,24 +102,24 @@ $slider-height:230px;
         left: 50%;
         bottom:20px;
         transform: translate(-50%,0);
-        .ring{
-            display: inline-block;
-            width: 10px;
-            height: 10px;
-            border-radius: 10px;
-            background-color: #fff;
+        color: #fff;
+        .icon-yuan{
+            font-size: 12px;
             position: relative;
-        }
-        .solid{
-            display: inline-block;
-            width: 6px;
-            height: 6px;
-            border-radius: 6px;
-            background-color:transparent;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%,-50%);
+            &:hover{
+                .icon-circle{
+                    display: block; 
+                    text-shadow: 0 0 12px #fff;         
+                }
+            }
+            .icon-circle{
+                font-size: 6px;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%,-50%);
+                display: none;              
+            }
         }
     }
 }

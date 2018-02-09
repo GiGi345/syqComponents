@@ -64,6 +64,11 @@ var sliderApp = {
                 product = elem.product,
                 newPrice = elem.newPrice,
                 oldPrice = elem.oldPrice;
+            if(type == 1){
+                liDom = '<li class="pic">' +
+                '<img src=' + imgUrl + ' alt="slider" class="imgSlider">' +
+                '</li>'
+            }
             if(type == 2){
                 liDom = '<li class="pic">' +
                 '<img src=' + imgUrl + ' alt="slider">' +
@@ -80,11 +85,6 @@ var sliderApp = {
                 '</span>' +
                 '</p>' +
                 ' </div>' +
-                '</li>'
-            }
-            if(type == 1){
-                liDom = '<li class="pic">' +
-                '<img src=' + imgUrl + ' alt="slider" class="imgSlider">' +
                 '</li>'
             }
             that.$elem.find(".allWidth").append(liDom);
@@ -105,6 +105,7 @@ var sliderApp = {
             $rightBtn = that.$elem.find(".right-btn"),
             $copyPic = $pic.clone(true);
             singleWidth = $pic.width() + 1,
+            allCardsNum = $pic.length/2,
             allCardsLength = singleWidth * allCardsNum,
             displayNum = that.options.disPlayNum,            //展示图片数
             displayLength = singleWidth * displayNum,
@@ -129,6 +130,10 @@ var sliderApp = {
         /* 右移 */
         $rightBtn.on("click",function(){
             var currentLeft,moveDistance;
+            // currentLeft = Math.abs(parseInt($allWidth.css("left")));
+            // if(currentLeft <=allCardsLength){    
+            //     $allWidth.css("left",-(allCardsLength  + currentLeft));
+            // }
             currentLeft = parseInt($allWidth.css("left"));
             if(currentLeft>=0){    
                 $allWidth.css("left",-(allCardsLength  +  Math.abs(currentLeft)));
@@ -146,11 +151,12 @@ var sliderApp = {
     /* 自动播放 */
     isAutoPlay:function(){
         var that = this,
+            $leftBtn = that.$elem.find(".left-btn"),
             $rightBtn = that.$elem.find(".right-btn"),
             timer;
        function play(){
             timer = setInterval(function(){
-                $rightBtn.click();
+                $leftBtn.click();
             },1000)
         };
         play();
