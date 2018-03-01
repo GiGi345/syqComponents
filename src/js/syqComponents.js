@@ -153,18 +153,18 @@ var sliderApp = {
     /* 自动播放 */
     isAutoPlay: function ($elem, options) {
         var that = this,
-            $leftBtn = $elem.find(".left-btn"),
-            $rightBtn = $elem.find(".right-btn");
+            timers = [];
+      
         function play() {
-            if(!$elem.timer){
-                $elem.timer = setInterval(function () {
-                    $leftBtn.click();
-                    console.log($elem)
-                    $elem.on("mouseover",function(){
-                        clearInterval($elem.timer);
-                    })
-                }, 1000)
-            }
+            var timer = setInterval(function () {
+                var $leftBtn = $elem.find(".left-btn");
+                $leftBtn.click();
+                // $elem.on("mouseover",function(){
+                //     clearInterval($elem.timer);
+                // })
+            }, 1000);
+            timers.push(timer);
+            console.log(timers);
         };
         play();
         // function stop(){
