@@ -23,6 +23,7 @@ var sliderApp = {
         var that = this;
         var $elem,defaults,options;
         $elem = elem;
+        $elem.animateFlag = true;
         //默认配置
         if (param.data.length == 0) {
             throw new Error("data不能为空");
@@ -116,18 +117,19 @@ var sliderApp = {
         /* 左移 */
         $leftBtn.on("click", function () {
             var currentLeft, moveDistance;
-            currentLeft = Math.abs(parseInt($allWidth.css("left"))),
+                currentLeft = Math.abs(parseInt($allWidth.css("left"))),
                 moveDistance = currentLeft + singleWidth * rollingNum;
-            if (animateFlag) {
-                animateFlag = false;
+            if ($elem.animateFlag) {
+                $elem.animateFlag = false;
                 $allWidth.animate({ left: - moveDistance }, amimateTime, function () {
                     var currentRight = parseInt($allWidth.css("right"));
                     if (currentRight >= 0) {
                         $allWidth.css("left", -(allCardsLength - (displayLength - currentRight)));
                     }
-                    animateFlag = true;
+                    $elem.animateFlag = true;
                 });
             }
+            
         })
         /* 右移 */
         $rightBtn.on("click", function () {
@@ -142,40 +144,35 @@ var sliderApp = {
             }
             currentLeft = Math.abs(parseInt($allWidth.css("left"))),
                 moveDistance = currentLeft - singleWidth * rollingNum;
-            if (animateFlag) {
-                animateFlag = false;
+            if ($elem.animateFlag) {
+                $elem.animateFlag = false;
                 $allWidth.animate({ left: -moveDistance }, amimateTime, function () {
-                    animateFlag = true;
+                    $elem.animateFlag = true;
                 });
             }
         })
     },
     /* 自动播放 */
     isAutoPlay: function ($elem, options) {
-        var that = this,
-            timers = [];
-      
+        var that = this;
         function play() {
-            var timer = setInterval(function () {
+            $elem.timer = setInterval(function () {
+                console.log($elem)
                 var $leftBtn = $elem.find(".left-btn");
                 $leftBtn.click();
-                // $elem.on("mouseover",function(){
-                //     clearInterval($elem.timer);
-                // })
             }, 1000);
-            timers.push(timer);
-            console.log(timers);
+          
         };
         play();
-        // function stop(){
-        //     clearInterval($elem.timer);
-        // }
-        // $elem.on("mouseover",function(){
-        //     stop();
-        // })
-        // $elem.on("mouseout",function(){
-        //     play();
-        // })
+        function stop(){
+            clearInterval($elem.timer);
+        }
+        $elem.on("mouseover",function(){
+            stop();
+        })
+        $elem.on("mouseout",function(){
+            play();
+        })
     }
 
 }
