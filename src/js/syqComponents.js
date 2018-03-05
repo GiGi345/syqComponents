@@ -23,11 +23,11 @@ var sliderApp = {
         var that = this;
         var $elem,defaults,options;
         $elem = elem;
-        $elem.animateFlag = true;
-        //默认配置
+        $elem.animateFlag = true;        //标志动画
         if (param.data.length == 0) {
             throw new Error("data不能为空");
         }
+        //默认配置
         defaults = {
             type: 1,             //滑动组件的类型，1：纯图片，2：有商品内容
             width: 800,          //滑动组件宽度
@@ -36,7 +36,7 @@ var sliderApp = {
             animateTime: 1000,  //动画的速度
             autoPlay: true       //是否自动播放
         }
-        options = $.extend(true, defaults, param);
+        options = $.extend(true,{}, defaults, param);
             that._renderDom($elem, options);
         that._event($elem, options);
         if (options.autoPlay) {
@@ -134,10 +134,6 @@ var sliderApp = {
         /* 右移 */
         $rightBtn.on("click", function () {
             var currentLeft, moveDistance;
-            // currentLeft = Math.abs(parseInt($allWidth.css("left")));
-            // if(currentLeft <=allCardsLength){    
-            //     $allWidth.css("left",-(allCardsLength  + currentLeft));
-            // }
             currentLeft = parseInt($allWidth.css("left"));
             if (currentLeft >= 0) {
                 $allWidth.css("left", -(allCardsLength + Math.abs(currentLeft)));
