@@ -51,7 +51,7 @@ var sliderApp = {
         containerWidth = options.width;
         disPlayNum = options.disPlayNum;
         cardWidth = containerWidth / disPlayNum;
-        $elem.addClass("slider-container");
+        $elem.addClass("syq-slider-container");
         var ulDom, liDom, btnDom;
         ulDom = '<ul class="allWidth clearfix"></ul>';
         btnDom = ' <button class="left-btn"><</button>' +
