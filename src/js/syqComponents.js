@@ -16,7 +16,7 @@
     }
     app.init();
 })(jQuery)
-
+var tr = 0;
 /* 滑动组件 */
 var sliderApp = {
     _init: function (elem, param) {
