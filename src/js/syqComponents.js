@@ -1,10 +1,10 @@
 ;
 (function ($) {
     var app = {
-        init: function () {
-            this.components();
+        _init: function () {
+            this._components();
         },
-        components: function () {
+        _components: function () {
             $.fn.extend({
                 /* 滑动组件 */
                 syqSlider: function (param) {
@@ -12,9 +12,16 @@
                     sliderApp._init(elem, param);
                 }
             })
+            $.extend({
+                /* 弹窗 */
+                syqModal:function(param){
+                    modalApp._init(param);
+                }
+            })
+
         }
     }
-    app.init();
+    app._init();
 })(jQuery)
 var tr = 0;
 /* 滑动组件 */
@@ -170,4 +177,71 @@ var sliderApp = {
         })
     }
 
+}
+/* 模态框 */
+var modalApp = {
+      /**配置参数
+       * @param {object}
+       *   - btn       {array}   //内容下方按钮组
+       *   - backdrop  {boolean} //是否可以点击背景关闭，默认为true
+       *   - isDrag    {boolean}  //是否可以拖动内容块
+       */
+    _init:function(param){
+        var that = this,
+            defaults = {
+                title:"信息",
+                width:200,
+                content:"我是默认内容",
+                btn:["确定","取消"],
+                backdrop:true,            
+                isDrag:true             
+            },
+        options  = $.extend(true,{},defaults,param)
+        that._renderDom(options);
+        that._event(options);
+    },
+    _renderDom:function(options){
+        var shadeDom = '<div class="syq-modal-shade"></div>',
+            shadeCon = '<div class="syq-modal-container"></div>';
+        if($("body .syq-modal-container").length == 0){
+            var titleConDom = '<div class="modal-title">' + options.title + '</div>'
+                            +' <div class="modal-content">' + options.content + '</div>',
+                btnsDom = '<div class="modal-btn"></div>',
+                closeDom = '<div class="modal-close">'
+                            + '<i class="iconfont icon-close"></i>'
+                            + '</div>'
+                singleBtnDom = "";
+            for(var i=0;i<options.btn.length;i++){
+                var btnName = options.btn[i];
+                if(i == 0){
+                    singleBtnDom = '<button class="btn btn-primary">' + btnName + '</button>'
+                }else{
+                    singleBtnDom = singleBtnDom + '<button class="btn btn-default">' + btnName + '</button>';
+                }
+                
+            }
+            $("body").append(shadeDom + shadeCon);
+            $(".syq-modal-container").html(titleConDom + btnsDom + closeDom);
+            $(".syq-modal-container").css("width",options.width)
+            $(".modal-btn").html(singleBtnDom);
+        }
+    },
+    _event:function(options){
+        $(".modal-close").on("click",function(){
+            $(".syq-modal-shade").remove();
+            $(".syq-modal-container").remove();
+        })
+        if(options.backdrop && $("body .syq-modal-container").length != 0){
+            $(document).on("click",function(event){
+                console.log(event.target);
+                var $popCon = $(".syq-modal-container"),
+                    $shade = $(".syq-modal-shade");
+                /* 点击目标区域不是内容以及内容内元素 */
+                if($shade.is(event.target)&&!$popCon.is(event.target) && $popCon.has(event.target).length == 0){  
+                    $(".syq-modal-shade").remove();
+                    $(".syq-modal-container").remove();
+                }
+            })
+        }   
+    }
 }
