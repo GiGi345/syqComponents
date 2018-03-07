@@ -153,7 +153,6 @@ var sliderApp = {
         var that = this;
         function play() {
             $elem.timer = setInterval(function () {
-                console.log($elem)
                 var $leftBtn = $elem.find(".left-btn");
                 $leftBtn.click();
             }, 1000);

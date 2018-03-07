@@ -133,7 +133,17 @@ $slider-height:470px;
         line-height: 36px;
         background-color: #fafafa;
         text-align: right;
+        border-radius: 0 0 6px 6px;
     }
+    .popup-close{
+        position: absolute;
+        top: 5px;;
+        right: 5px;
+        cursor: pointer;
+    }
+}
+.syq-hide{
+    display: none
 }
 
 //按钮
@@ -141,9 +151,11 @@ $slider-height:470px;
     padding:5px 10px;
     font-size: 12px;
     border-radius: 3px;
+    cursor: pointer;
 }
 .btn-primary{
     color: #fff;
+    border: 1px solid #0e77ca;
     border-radius: 3px;
     background-color: #0e77ca !important;
     background-image:  linear-gradient(to bottom,#108ee9,#0e77ca) !important;
