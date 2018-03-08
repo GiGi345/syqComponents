@@ -203,6 +203,9 @@ var modalApp = {
     _renderDom:function(options){
         var shadeDom = '<div class="syq-modal-shade"></div>',
             shadeCon = '<div class="syq-modal-container"></div>';
+        if(options.isDrag){
+            shadeCon = '<div class="syq-modal-container" draggable="true"></div>'
+        }
         if($("body .syq-modal-container").length == 0){
             var titleConDom = '<div class="modal-title">' + options.title + '</div>'
                             +' <div class="modal-content">' + options.content + '</div>',
@@ -243,5 +246,25 @@ var modalApp = {
                 }
             })
         }   
+        if(options.isDrag){
+            var origLeft = 0,
+                origTop = 0,
+                mouseOrigLeft = 0,
+                mouseOrigRight = 0,
+                mouseMovedLeft = 0,
+                mouseMovedRight = 0;
+            $(document).on("dragstart",".syq-modal-container",function(e){
+                origLeft = e.target.offsetLeft;
+                origTop = e.target.offsetTop;
+            })
+            $(document).on("dragover",".syq-modal-shade",function(e){
+                e.preventDefault();
+            })
+            $(document).on("dragend",".syq-modal-container",function(e){
+                console.log(origLeft);
+                console.log(origTop);
+                console.log(e);
+            })
+        }
     }
 }
