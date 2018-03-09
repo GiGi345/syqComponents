@@ -203,9 +203,6 @@ var modalApp = {
     _renderDom:function(options){
         var shadeDom = '<div class="syq-modal-shade"></div>',
             shadeCon = '<div class="syq-modal-container"></div>';
-        if(options.isDrag){
-            shadeCon = '<div class="syq-modal-container" draggable="true"></div>'
-        }
         if($("body .syq-modal-container").length == 0){
             var titleConDom = '<div class="modal-title">' + options.title + '</div>'
                             +' <div class="modal-content">' + options.content + '</div>',
@@ -247,24 +244,52 @@ var modalApp = {
             })
         }   
         if(options.isDrag){
-            var origLeft = 0,
-                origTop = 0,
+            var origTop = 0,
+                origLeft = 0,
+                mouseOrigTop = 0,
                 mouseOrigLeft = 0,
-                mouseOrigRight = 0,
+                mouseMovedTop = 0,
                 mouseMovedLeft = 0,
-                mouseMovedRight = 0;
-            $(document).on("dragstart",".syq-modal-container",function(e){
-                origLeft = e.target.offsetLeft;
-                origTop = e.target.offsetTop;
+                diffDisTop = 0,
+                diffDisLeft = 0;
+            var $moveWrap,dragFlag;
+            $(document).on("mousedown",".modal-title",function(e){
+                dragFlag = true;
+                $moveWrap = $(this).closest(".syq-modal-container");
+                origTop = $moveWrap.offsetTop;
+                origLeft = $moveWrap.offsetLeft;
+                mouseOrigTop = e.clientX;
+                mouseOrigLeft = e.clientY;
+                diffDisTop = mouseOrigTop - origTop;
+                diffDisLeft = mouseOrigLeft - origLeft;
+                if(dragFlag){
+                    $(document).on("mousemove",function(e){
+                        mouseMovedTop = e.clientX;
+                        mouseMovedLeft = e.clientY;
+                        $moveWrap.css("top",mouseMovedTop - diffDisTop);
+                        $moveWrap.css("left",mouseMovedLeft - diffDisLeft);
+                    })
+                    $(document).on("mouseup",function(e){
+                        console.log($moveWrap)
+                        mouseMovedTop = e.clientX;
+                        mouseMovedLeft = e.clientY;
+                        $moveWrap.css("top",mouseMovedTop - diffDisTop+"px");
+                        $moveWrap.css("left",mouseMovedLeft - diffDisLeft+"px");
+                        dragFlag = false
+                    })
+                }
             })
-            $(document).on("dragover",".syq-modal-shade",function(e){
-                e.preventDefault();
-            })
-            $(document).on("dragend",".syq-modal-container",function(e){
-                console.log(origLeft);
-                console.log(origTop);
-                console.log(e);
-            })
+          
+           
+
+            // $(document).on("dragover",".syq-modal-shade",function(e){
+            //     e.preventDefault();
+            // })
+            // $(document).on("dragend",".syq-modal-container",function(e){
+            //     console.log(origLeft);
+            //     console.log(origTop);
+            //     console.log(e);
+            // })
         }
     }
 }
