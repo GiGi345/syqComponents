@@ -107,12 +107,15 @@ $slider-height:470px;
     opacity: 0.3;
 }
 .syq-modal-container{
-    position: fixed;
+    position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%,-50%);
     border-radius: 6px;
     background-color: #fff;
+    z-index: 99999;
+        &.center{
+            transform: translate(-50%,-50%);
+        }
     .modal-title{
         height: 36px;
         line-height: 36px;
@@ -122,6 +125,12 @@ $slider-height:470px;
         padding:0 20px;
         background-color: #fafafa;
         background-image: linear-gradient(to bottom,#fafafa,#e9e9e9);
+        &:hover{
+            cursor: move;
+        }
+        &.move{
+            cursor: move;
+        }
     }
     .modal-content{
         padding:20px;
@@ -137,7 +146,7 @@ $slider-height:470px;
     .modal-close{
         position: absolute;
         top: 5px;;
-        right: 5px;
+        right: 10px;
         cursor: pointer;
     }
 }

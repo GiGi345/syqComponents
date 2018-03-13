@@ -14,7 +14,7 @@
             })
             $.extend({
                 /* 弹窗 */
-                syqModal:function(param){
+                syqModal: function (param) {
                     modalApp._init(param);
                 }
             })
@@ -28,7 +28,7 @@ var tr = 0;
 var sliderApp = {
     _init: function (elem, param) {
         var that = this;
-        var $elem,defaults,options;
+        var $elem, defaults, options;
         $elem = elem;
         $elem.animateFlag = true;        //标志动画
         if (param.data.length == 0) {
@@ -43,8 +43,8 @@ var sliderApp = {
             animateTime: 1000,  //动画的速度
             autoPlay: true       //是否自动播放
         }
-        options = $.extend(true,{}, defaults, param);
-            that._renderDom($elem, options);
+        options = $.extend(true, {}, defaults, param);
+        that._renderDom($elem, options);
         that._event($elem, options);
         if (options.autoPlay) {
             that.isAutoPlay(elem, options);
@@ -124,7 +124,7 @@ var sliderApp = {
         /* 左移 */
         $leftBtn.on("click", function () {
             var currentLeft, moveDistance;
-                currentLeft = Math.abs(parseInt($allWidth.css("left"))),
+            currentLeft = Math.abs(parseInt($allWidth.css("left"))),
                 moveDistance = currentLeft + singleWidth * rollingNum;
             if ($elem.animateFlag) {
                 $elem.animateFlag = false;
@@ -136,7 +136,7 @@ var sliderApp = {
                     $elem.animateFlag = true;
                 });
             }
-            
+
         })
         /* 右移 */
         $rightBtn.on("click", function () {
@@ -163,16 +163,16 @@ var sliderApp = {
                 var $leftBtn = $elem.find(".left-btn");
                 $leftBtn.click();
             }, 1000);
-          
+
         };
         play();
-        function stop(){
+        function stop() {
             clearInterval($elem.timer);
         }
-        $elem.on("mouseover",function(){
+        $elem.on("mouseover", function () {
             stop();
         })
-        $elem.on("mouseout",function(){
+        $elem.on("mouseout", function () {
             play();
         })
     }
@@ -180,116 +180,111 @@ var sliderApp = {
 }
 /* 模态框 */
 var modalApp = {
-      /**配置参数
-       * @param {object}
-       *   - btn       {array}   //内容下方按钮组
-       *   - backdrop  {boolean} //是否可以点击背景关闭，默认为true
-       *   - isDrag    {boolean}  //是否可以拖动内容块
-       */
-    _init:function(param){
+    /**配置参数
+     * @param {object}
+     *   - btn       {array}   //内容下方按钮组
+     *   - backdrop  {boolean} //是否可以点击背景关闭，默认为true
+     *   - isDrag    {boolean}  //是否可以拖动内容块
+     */
+    _init: function (param) {
         var that = this,
             defaults = {
-                title:"信息",
-                width:200,
-                content:"我是默认内容",
-                btn:["确定","取消"],
-                backdrop:true,            
-                isDrag:true             
+                title: "信息",
+                width: 200,
+                content: "我是默认内容",
+                btn: ["确定", "取消"],
+                backdrop: true,
+                isDrag: true
             },
-        options  = $.extend(true,{},defaults,param)
+            options = $.extend(true, {}, defaults, param)
         that._renderDom(options);
         that._event(options);
     },
-    _renderDom:function(options){
+    _renderDom: function (options) {
         var shadeDom = '<div class="syq-modal-shade"></div>',
-            shadeCon = '<div class="syq-modal-container"></div>';
-        if($("body .syq-modal-container").length == 0){
+            shadeCon = '<div class="syq-modal-container center"></div>';
+        if ($("body .syq-modal-container").length == 0) {
             var titleConDom = '<div class="modal-title">' + options.title + '</div>'
-                            +' <div class="modal-content">' + options.content + '</div>',
+                + ' <div class="modal-content">' + options.content + '</div>',
                 btnsDom = '<div class="modal-btn"></div>',
                 closeDom = '<div class="modal-close">'
-                            + '<i class="iconfont icon-close"></i>'
-                            + '</div>'
-                singleBtnDom = "";
-            for(var i=0;i<options.btn.length;i++){
+                    + '<i class="iconfont icon-close"></i>'
+                    + '</div>'
+            singleBtnDom = "";
+            for (var i = 0; i < options.btn.length; i++) {
                 var btnName = options.btn[i];
-                if(i == 0){
+                if (i == 0) {
                     singleBtnDom = '<button class="btn btn-primary">' + btnName + '</button>'
-                }else{
+                } else {
                     singleBtnDom = singleBtnDom + '<button class="btn btn-default">' + btnName + '</button>';
                 }
-                
+
             }
             $("body").append(shadeDom + shadeCon);
             $(".syq-modal-container").html(titleConDom + btnsDom + closeDom);
-            $(".syq-modal-container").css("width",options.width)
+            $(".syq-modal-container").css("width", options.width)
             $(".modal-btn").html(singleBtnDom);
         }
     },
-    _event:function(options){
-        $(".modal-close").on("click",function(){
+    _event: function (options) {
+        $(".modal-close").on("click", function () {
             $(".syq-modal-shade").remove();
             $(".syq-modal-container").remove();
         })
-        if(options.backdrop && $("body .syq-modal-container").length != 0){
-            $(document).on("click",function(event){
+        //点击背景关闭
+        if (options.backdrop && $("body .syq-modal-container").length != 0) {
+            $(document).on("click", function (event) {
                 console.log(event.target);
                 var $popCon = $(".syq-modal-container"),
                     $shade = $(".syq-modal-shade");
                 /* 点击目标区域不是内容以及内容内元素 */
-                if($shade.is(event.target)&&!$popCon.is(event.target) && $popCon.has(event.target).length == 0){  
+                if ($shade.is(event.target) && !$popCon.is(event.target) && $popCon.has(event.target).length == 0) {
                     $(".syq-modal-shade").remove();
                     $(".syq-modal-container").remove();
                 }
             })
-        }   
-        if(options.isDrag){
-            var origTop = 0,
-                origLeft = 0,
-                mouseOrigTop = 0,
-                mouseOrigLeft = 0,
-                mouseMovedTop = 0,
-                mouseMovedLeft = 0,
-                diffDisTop = 0,
-                diffDisLeft = 0;
-            var $moveWrap,dragFlag;
-            $(document).on("mousedown",".modal-title",function(e){
-                dragFlag = true;
-                $moveWrap = $(this).closest(".syq-modal-container");
-                origTop = $moveWrap.offsetTop;
-                origLeft = $moveWrap.offsetLeft;
-                mouseOrigTop = e.clientX;
-                mouseOrigLeft = e.clientY;
-                diffDisTop = mouseOrigTop - origTop;
-                diffDisLeft = mouseOrigLeft - origLeft;
-                if(dragFlag){
-                    $(document).on("mousemove",function(e){
-                        mouseMovedTop = e.clientX;
-                        mouseMovedLeft = e.clientY;
-                        $moveWrap.css("top",mouseMovedTop - diffDisTop);
-                        $moveWrap.css("left",mouseMovedLeft - diffDisLeft);
-                    })
-                    $(document).on("mouseup",function(e){
-                        console.log($moveWrap)
-                        mouseMovedTop = e.clientX;
-                        mouseMovedLeft = e.clientY;
-                        $moveWrap.css("top",mouseMovedTop - diffDisTop+"px");
-                        $moveWrap.css("left",mouseMovedLeft - diffDisLeft+"px");
-                        dragFlag = false
-                    })
-                }
-            })
-          
-           
-
-            // $(document).on("dragover",".syq-modal-shade",function(e){
-            //     e.preventDefault();
-            // })
-            // $(document).on("dragend",".syq-modal-container",function(e){
-            //     console.log(origLeft);
-            //     console.log(origTop);
-            //     console.log(e);
-            // })
         }
+        //设置拖动
+        if (options.isDrag) {
+            var diffDisTop = 0, diffDisLeft = 0;
+            var $moveWrap, dragFlag = false;
+            $(document).on("mousedown", ".modal-title", function (e) {
+                $(this).addClass("move");
+                $moveWrap = $(this).closest(".syq-modal-container");
+                diffDisTop = e.clientY - $moveWrap[0].offsetTop;
+                diffDisLeft = e.clientX - $moveWrap[0].offsetLeft;
+                dragFlag = true;
+            })
+            $(document).on("mousemove",function (e) {
+                if(!dragFlag) return;
+                var pageW = $(window).width() , pageH = $(window).height();
+                    dialogW = $(".syq-modal-container").width() , dialogH = $(".syq-modal-container").height(),
+                    dialogTop = e.clientY - diffDisTop , dialogLeft = e.clientX - diffDisLeft;
+                //控制弹窗移动的范围
+                if(dialogTop < dialogH/2){
+                    dialogTop = dialogH/2;
+                }else if(dialogTop > pageH - dialogH/2){
+                    dialogTop = pageH - dialogH/2;
+                }
+                if(dialogLeft < dialogW/2){
+                    dialogLeft = dialogW/2;
+                }else if(dialogLeft > pageW - dialogW/2){
+                    dialogLeft = pageW - dialogW/2;
+                }
+
+                console.log(dialogTop);
+                $moveWrap.css("top", dialogTop)
+                $moveWrap.css("left", dialogLeft)     
+            })
+            $(document).on("mouseup",function (e) {
+                console.log("up")
+                dragFlag = false;
+            })
+        }
+
+        //设置内容不可选中
+        $(".syq-modal-container").on("selectstart",function(){
+            return false;
+        })
     }
 }
