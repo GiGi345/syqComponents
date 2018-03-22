@@ -2,11 +2,11 @@
 以下是各个文件说明
 * js  
   1.lib：    --引用的外部插件  
- 2.syqCcomponents.js：        --组件js实现  
+ 2.syqComponents.js：        --组件js实现  
  * sass  
-  syqCcomponents.scss：  --组件样式实现  
+  syqComponents.scss：  --组件样式实现  
  * css  
-   syqCcomponents.css：  --scss生成的css
+   syqComponents.css：  --scss生成的css
  * test       --测试组件页面     
  （测试的滑动组件图片路径为绝对路径，可以在src目录下用anywhere打开）
 ## v1.0 (2018/3/12)  
