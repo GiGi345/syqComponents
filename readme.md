@@ -1,4 +1,5 @@
 # 本组件是基于jquery编写，目前有滑动组件，弹窗组件
+可以通过(https://gigi345.github.io/syqComponents)查看效果
 以下是各个文件说明
 * js  
   1.lib：    --引用的外部插件  
